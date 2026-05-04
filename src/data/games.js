@@ -30,6 +30,13 @@ export const games = [
     },
     year: 2024,
     engine: "Unity6",
+    webgl: {
+      loader: "/gumiho-studio/unity/Bloomee/Build/bloomee_web.loader.js",
+      data: "/gumiho-studio/unity/Bloomee/Build/bloomee_web.data.br",
+      framework: "/gumiho-studio/unity/Bloomee/Build/bloomee_web.framework.js.br",
+      code: "/gumiho-studio/unity/Bloomee/Build/bloomee_web.wasm.br",
+      streamingAssets: "/gumiho-studio/unity/Bloomee/StreamingAssets",
+    }
   },
   // {
   //   id: 2,

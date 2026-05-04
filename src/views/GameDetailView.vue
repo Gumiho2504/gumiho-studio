@@ -8,8 +8,17 @@
       <RouterLink to="/games" class="btn-primary">← Back to Games</RouterLink>
     </div>
 
+    <!-- Unity Player Section -->
+    <div v-if="showPlayer && game.webgl" style="max-width:1100px;margin:0 auto;padding:1rem 1.5rem 2rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+        <h3 class="font-cinzel" style="color:#b04aff;margin:0;">Playing: {{ game.name }}</h3>
+        <button @click="showPlayer = false" class="btn-outline" style="padding:0.5rem 1rem;">Close Game</button>
+      </div>
+      <UnityPlayer :config="game.webgl" />
+    </div>
+
     <!-- Game detail -->
-    <div v-else style="max-width:1100px;margin:0 auto;padding:2rem 1.5rem 5rem;">
+    <div v-else-if="game" style="max-width:1100px;margin:0 auto;padding:2rem 1.5rem 5rem;">
 
       <!-- Back -->
       <RouterLink to="/games" class="btn-outline" style="margin-bottom:2rem;display:inline-flex;">
@@ -86,8 +95,21 @@
           <!-- Download -->
           <div class="border-glow" style="background:#0d0d1f;border-radius:16px;padding:1.75rem;margin-bottom:1.5rem;">
             <h3 class="font-rajdhani" style="font-size:.9rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#8a80aa;margin:0 0 1.2rem;">
-              Download Now
+              Play & Download
             </h3>
+            
+            <button 
+              v-if="game.webgl"
+              @click="showPlayer = true"
+              class="btn-primary" 
+              style="width:100%;justify-content:center;margin-bottom:.75rem;border-radius:10px;background:linear-gradient(135deg, #b04aff, #7026ff);"
+            >
+              <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" style="margin-right:8px;">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+              Play in Browser
+            </button>
+
             <a :href="game.links.playstore" class="btn-primary" style="width:100%;justify-content:center;margin-bottom:.75rem;border-radius:10px;">
               <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M3.18 23.76a2.5 2.5 0 01-.68-.1L13.88 12 3.18.34a2.5 2.5 0 01.69-.1c.46 0 .93.12 1.35.38l12.2 6.93-3.63 3.63L3.18 23.76z"/>
@@ -135,9 +157,11 @@ import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { games } from '../data/games.js'
 import LightboxModal from '../components/LightboxModal.vue'
+import UnityPlayer from '../components/UnityPlayer.vue'
 
 const route = useRoute()
 const lightboxSrc = ref(null)
+const showPlayer = ref(false)
 
 const game = computed(() => games.find(g => g.id === parseInt(route.params.id)) || null)
 
