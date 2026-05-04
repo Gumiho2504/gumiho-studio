@@ -1,4 +1,4 @@
-/*! coi-serviceworker v0.1.7 - Guido Zuidhof and contributors, licensed under MIT */
+/*! coi-serviceworker v0.1.7-unity - modified for Brotli headers */
 let coepCredentialless = false;
 if (typeof window === 'undefined') {
     self.addEventListener("install", () => self.skipWaiting());
@@ -35,11 +35,13 @@ if (typeof window === 'undefined') {
         event.respondWith(
             fetch(request)
                 .then((response) => {
-                    if (response.status === 0) {
+                    if (response.status === 0 || response.status === 304 || response.status === 204) {
                         return response;
                     }
 
+                    const url = event.request.url;
                     const newHeaders = new Headers(response.headers);
+                    
                     newHeaders.set("Cross-Origin-Embedder-Policy",
                         coepCredentialless ? "credentialless" : "require-corp"
                     );
@@ -48,13 +50,31 @@ if (typeof window === 'undefined') {
                     }
                     newHeaders.set("Cross-Origin-Opener-Policy", "same-origin");
 
+                    // Unity WebGL Compression Support
+                    if (url.includes(".br") || url.includes(".gz")) {
+                        console.log("COI: Intercepting Unity build file:", url);
+                        newHeaders.delete("Content-Length");
+                        
+                        if (url.includes(".br")) {
+                            newHeaders.set("Content-Encoding", "br");
+                        } else if (url.includes(".gz")) {
+                            newHeaders.set("Content-Encoding", "gzip");
+                        }
+
+                        if (url.includes(".js")) newHeaders.set("Content-Type", "application/javascript");
+                        else if (url.includes(".wasm")) newHeaders.set("Content-Type", "application/wasm");
+                        else if (url.includes(".data")) newHeaders.set("Content-Type", "application/octet-stream");
+                    }
+
                     return new Response(response.body, {
                         status: response.status,
                         statusText: response.statusText,
                         headers: newHeaders,
                     });
                 })
-                .catch((e) => console.error(e))
+                .catch((e) => {
+                    console.error("COI Fetch Error:", e);
+                })
         );
     });
 
