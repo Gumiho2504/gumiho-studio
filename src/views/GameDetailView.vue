@@ -8,13 +8,22 @@
       <RouterLink to="/games" class="btn-primary">← Back to Games</RouterLink>
     </div>
 
-    <!-- Unity Player Section -->
-    <div v-if="showPlayer && game.webgl" style="max-width:1100px;margin:0 auto;padding:1rem 1.5rem 2rem;">
+    <!-- Game Player Section -->
+    <div v-if="showPlayer && (game.webgl || game.cocosUrl)" style="max-width:1100px;margin:0 auto;padding:1rem 1.5rem 2rem;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
         <h3 class="font-cinzel" style="color:#b04aff;margin:0;">Playing: {{ game.name }}</h3>
         <button @click="showPlayer = false" class="btn-outline" style="padding:0.5rem 1rem;">Close Game</button>
       </div>
-      <UnityPlayer :config="game.webgl" />
+      
+      <!-- Unity Player -->
+      <UnityPlayer v-if="game.webgl" :config="game.webgl" />
+      
+      <!-- Cocos Player -->
+      <CocosPlayer 
+        v-else-if="game.cocosUrl" 
+        :url="game.cocosUrl" 
+        :ratio="game.aspectRatio || '16 / 9'"
+      />
     </div>
 
     <!-- Game detail -->
@@ -99,7 +108,7 @@
             </h3>
             
             <button 
-              v-if="game.webgl"
+              v-if="game.webgl || game.cocosUrl"
               @click="showPlayer = true"
               class="btn-primary" 
               style="width:100%;justify-content:center;margin-bottom:.75rem;border-radius:10px;background:linear-gradient(135deg, #b04aff, #7026ff);"
@@ -158,6 +167,7 @@ import { useRoute } from 'vue-router'
 import { games } from '../data/games.js'
 import LightboxModal from '../components/LightboxModal.vue'
 import UnityPlayer from '../components/UnityPlayer.vue'
+import CocosPlayer from '../components/CocosPlayer.vue'
 
 const route = useRoute()
 const lightboxSrc = ref(null)

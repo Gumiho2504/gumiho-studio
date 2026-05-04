@@ -36,62 +36,70 @@ export const games = [
     engine: "Unity6",
     webgl: {
       loader: `${BASE}/unity/Bloomee/Build/bloomee_web.loader.js`,
-      data: `${BASE}/unity/Bloomee/Build/bloomee_web.data.br`,
-      framework: `${BASE}/unity/Bloomee/Build/bloomee_web.framework.js.br`,
-      code: `${BASE}/unity/Bloomee/Build/bloomee_web.wasm.br`,
+      data: `${BASE}/unity/Bloomee/Build/bloomee_web.data.unityweb`,
+      framework: `${BASE}/unity/Bloomee/Build/bloomee_web.framework.js.unityweb`,
+      code: `${BASE}/unity/Bloomee/Build/bloomee_web.wasm.unityweb`,
       streamingAssets: `${BASE}/unity/Bloomee/StreamingAssets`,
     }
   },
+  {
+    id: 2,
+    name: "Tiles Blast",
+    tagline: "Blast through cosmic tiles",
+    description: "A fast-paced tile-matching puzzle game with explosive combos and cosmic effects. Match and blast through hundreds of levels in this vibrant puzzle adventure.",
+    thumb: `${BASE}/tiles_blast_thumb_1777879066376.png`,
+    banner: `${BASE}/tiles_blast_banner_1777879096705.png`,
+    category: "Puzzle",
+    features: [
+      "Hundreds of challenging levels",
+      "Spectacular explosive combos",
+      "Vibrant cosmic art style",
+      "Easy to learn, hard to master",
+      "Regular new level updates",
+      "Daily rewards and events"
+    ],
+    screenshots: [
+      `${BASE}/tiles_blast_thumb_1777879066376.png`,
+    ],
+    links: { playstore: "#", appstore: "#" },
+    year: 2024,
+    engine: "Unity6",
+    webgl: {
+      loader: `${BASE}/unity/TilesBlast/Build/TileBlastWebGL.loader.js`,
+      data: `${BASE}/unity/TilesBlast/Build/TileBlastWebGL.data.unityweb`,
+      framework: `${BASE}/unity/TilesBlast/Build/TileBlastWebGL.framework.js.unityweb`,
+      code: `${BASE}/unity/TilesBlast/Build/TileBlastWebGL.wasm.unityweb`,
+    }
+  },
+  {
+    id: 3,
+    name: "Swiper Bird",
+    tagline: "Swipe to soar through the magic forest",
+    description: "A fast-paced, addictive mobile adventure where you guide a brave little bird through a mystical forest. Use intuitive swipe gestures to dodge obstacles, collect magical fruits, and set high scores in this beautiful Cocos Creator powered experience.",
+    thumb: `${BASE}/swiper_bird_thumb_1777880735824.png`,
+    banner: `${BASE}/swiper_bird_banner_1777880769400.png`,
+    category: "Action",
+    features: [
+      "Smooth swipe-based controls",
+      "Endless procedurally generated levels",
+      "Unlockable bird characters",
+      "Stunning magical forest environment",
+      "Compete with friends on leaderboards",
+      "Optimized for mobile web"
+    ],
+    screenshots: [
+      `${BASE}/swiper_bird_thumb_1777880735824.png`,
+    ],
+    links: { playstore: "#", appstore: "#" },
+    year: 2024,
+    engine: "Cocos",
+    cocosUrl: `${BASE}/cocos/SwiperBird/index.html`,
+    aspectRatio: "9 / 16"
+  },
   // {
-  //   id: 2,
+  //   id: 4,
   //   name: "Spirit Cards",
-  //   tagline: "Battle with ancient mystical power",
-  //   description: "A strategic card battle game inspired by Southeast Asian mythology. Build decks from over 300 spirit cards, each with unique abilities drawn from Khmer legends. Challenge players worldwide in ranked seasons.",
-  //   thumb: "https://images.unsplash.com/photo-1541532713592-79a0317b6b77?w=600&q=80",
-  //   banner: "https://images.unsplash.com/photo-1535016120720-40c646be5580?w=1200&q=80",
-  //   category: "Card",
-  //   features: [
-  //     "300+ unique spirit cards",
-  //     "Inspired by Khmer mythology",
-  //     "PvP ranked ladder system",
-  //     "Weekly new card releases",
-  //     "Clan system & team battles",
-  //     "Offline AI practice mode"
-  //   ],
-  //   screenshots: [
-  //     "https://images.unsplash.com/photo-1594322436404-5a0526db4d13?w=600&q=80",
-  //     "https://images.unsplash.com/photo-1541532713592-79a0317b6b77?w=600&q=80",
-  //     "https://images.unsplash.com/photo-1535016120720-40c646be5580?w=600&q=80"
-  //   ],
-  //   links: { playstore: "#", appstore: "#" },
-  //   year: 2024,
-  //   engine: "Unity"
-  // },
-  // {
-  //   id: 3,
-  //   name: "Neon Realm",
-  //   tagline: "Survive together in the digital frontier",
-  //   description: "A fast-paced multiplayer battle arena set in a cyberpunk digital world. Up to 8 players fight across procedurally-generated arenas using unique hacker abilities. Real-time matches, cross-platform play.",
-  //   thumb: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&q=80",
-  //   banner: "https://images.unsplash.com/photo-1519337265831-281ec6cc8514?w=1200&q=80",
-  //   category: "Multiplayer",
-  //   features: [
-  //     "8-player real-time battles",
-  //     "Cross-platform multiplayer",
-  //     "20+ unique hacker characters",
-  //     "Procedurally generated arenas",
-  //     "Seasonal ranked tournaments",
-  //     "Voice chat & party system"
-  //   ],
-  //   screenshots: [
-  //     "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&q=80",
-  //     "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&q=80",
-  //     "https://images.unsplash.com/photo-1519337265831-281ec6cc8514?w=600&q=80"
-  //   ],
-  //   links: { playstore: "#", appstore: "#" },
-  //   year: 2025,
-  //   engine: "Unity"
-  // },
+
   // {
   //   id: 4,
   //   name: "Fox Tails",
