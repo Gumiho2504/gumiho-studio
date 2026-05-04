@@ -1,4 +1,4 @@
-/*! coi-serviceworker v0.1.7-unity-v2 - modified for .unityweb support */
+/*! coi-serviceworker v0.1.7-unity-v3 - added .bundle and .json support */
 let coepCredentialless = false;
 if (typeof window === 'undefined') {
     self.addEventListener("install", () => self.skipWaiting());
@@ -50,20 +50,26 @@ if (typeof window === 'undefined') {
                     }
                     newHeaders.set("Cross-Origin-Opener-Policy", "same-origin");
 
-                    // Unity WebGL Compression Support
-                    if (url.includes(".br") || url.includes(".gz") || url.includes(".unityweb")) {
-                        console.log("COI: Intercepting Unity build file:", url);
-                        newHeaders.delete("Content-Length");
+                    // Unity WebGL Asset Support (.br, .gz, .unityweb, .bundle, .json)
+                    const isUnityFile = [".br", ".gz", ".unityweb", ".bundle", ".json"].some(ext => url.includes(ext));
+                    
+                    if (isUnityFile) {
+                        console.log("COI: Intercepting Unity asset:", url);
                         
-                        // Default to Brotli for .unityweb as it's the Unity default
+                        // Handle compression headers
                         if (url.includes(".br") || url.includes(".unityweb")) {
+                            newHeaders.delete("Content-Length");
                             newHeaders.set("Content-Encoding", "br");
                         } else if (url.includes(".gz")) {
+                            newHeaders.delete("Content-Length");
                             newHeaders.set("Content-Encoding", "gzip");
                         }
 
+                        // Ensure correct Content-Types
                         if (url.includes(".js")) newHeaders.set("Content-Type", "application/javascript");
                         else if (url.includes(".wasm")) newHeaders.set("Content-Type", "application/wasm");
+                        else if (url.includes(".json")) newHeaders.set("Content-Type", "application/json");
+                        else if (url.includes(".bundle")) newHeaders.set("Content-Type", "application/octet-stream");
                         else if (url.includes(".data")) newHeaders.set("Content-Type", "application/octet-stream");
                     }
 
