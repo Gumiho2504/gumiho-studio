@@ -1,3 +1,7 @@
+const BASE = import.meta.env.BASE_URL.endsWith('/') 
+  ? import.meta.env.BASE_URL.slice(0, -1) 
+  : import.meta.env.BASE_URL;
+
 export const games = [
   {
     id: 1,
@@ -31,11 +35,11 @@ export const games = [
     year: 2024,
     engine: "Unity6",
     webgl: {
-      loader: "/gumiho-studio/unity/Bloomee/Build/bloomee_web.loader.js",
-      data: "/gumiho-studio/unity/Bloomee/Build/bloomee_web.data.br",
-      framework: "/gumiho-studio/unity/Bloomee/Build/bloomee_web.framework.js.br",
-      code: "/gumiho-studio/unity/Bloomee/Build/bloomee_web.wasm.br",
-      streamingAssets: "/gumiho-studio/unity/Bloomee/StreamingAssets",
+      loader: `${BASE}/unity/Bloomee/Build/bloomee_web.loader.js`,
+      data: `${BASE}/unity/Bloomee/Build/bloomee_web.data.br`,
+      framework: `${BASE}/unity/Bloomee/Build/bloomee_web.framework.js.br`,
+      code: `${BASE}/unity/Bloomee/Build/bloomee_web.wasm.br`,
+      streamingAssets: `${BASE}/unity/Bloomee/StreamingAssets`,
     }
   },
   // {
