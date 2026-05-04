@@ -1,4 +1,4 @@
-/*! coi-serviceworker v0.1.7-unity - modified for Brotli headers */
+/*! coi-serviceworker v0.1.7-unity-v2 - modified for .unityweb support */
 let coepCredentialless = false;
 if (typeof window === 'undefined') {
     self.addEventListener("install", () => self.skipWaiting());
@@ -51,11 +51,12 @@ if (typeof window === 'undefined') {
                     newHeaders.set("Cross-Origin-Opener-Policy", "same-origin");
 
                     // Unity WebGL Compression Support
-                    if (url.includes(".br") || url.includes(".gz")) {
+                    if (url.includes(".br") || url.includes(".gz") || url.includes(".unityweb")) {
                         console.log("COI: Intercepting Unity build file:", url);
                         newHeaders.delete("Content-Length");
                         
-                        if (url.includes(".br")) {
+                        // Default to Brotli for .unityweb as it's the Unity default
+                        if (url.includes(".br") || url.includes(".unityweb")) {
                             newHeaders.set("Content-Encoding", "br");
                         } else if (url.includes(".gz")) {
                             newHeaders.set("Content-Encoding", "gzip");
