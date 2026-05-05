@@ -9,7 +9,7 @@
     </div>
 
     <!-- Game Player Section -->
-    <div v-if="showPlayer && (game.webgl || game.cocosUrl)" class="player-section-container">
+    <div v-if="showPlayer && (game.webgl || game.cocosUrl || game.iframeUrl)" class="player-section-container">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;padding:0 1.5rem;">
         <h3 class="font-cinzel" style="color:#b04aff;margin:0;">Playing: {{ game.name }}</h3>
         <button @click="showPlayer = false" class="btn-outline" style="padding:0.5rem 1rem;">Close Game</button>
@@ -23,8 +23,8 @@
           :ratio="game.aspectRatio"
         />
         <CocosPlayer 
-          v-else-if="game.engine === 'Cocos'" 
-          :url="game.cocosUrl" 
+          v-else-if="game.engine === 'Cocos' || game.iframeUrl" 
+          :url="game.iframeUrl || game.cocosUrl" 
           :ratio="game.aspectRatio" 
           :orientation="game.orientation"
         />
@@ -106,7 +106,17 @@
               Play & Download
             </h3>
 
-            <button v-if="game.webgl || game.cocosUrl" @click="showPlayer = true" class="btn-primary"
+            <!-- External Game Link -->
+            <a v-if="game.iframeUrl" :href="game.iframeUrl" target="_blank" class="btn-primary"
+              style="width:100%;justify-content:center;margin-bottom:.75rem;border-radius:10px;background:linear-gradient(135deg, #b04aff, #7026ff);text-decoration:none;">
+              <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" style="margin-right:8px;">
+                <path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7z" />
+              </svg>
+              Play (Opens New Tab)
+            </a>
+
+            <!-- Local Game Player -->
+            <button v-else-if="game.webgl || game.cocosUrl" @click="showPlayer = true" class="btn-primary"
               style="width:100%;justify-content:center;margin-bottom:.75rem;border-radius:10px;background:linear-gradient(135deg, #b04aff, #7026ff);">
               <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" style="margin-right:8px;">
                 <path d="M8 5v14l11-7z" />

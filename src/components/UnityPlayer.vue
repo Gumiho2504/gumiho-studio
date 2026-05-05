@@ -187,13 +187,15 @@ onMounted(() => {
 .unity-container {
   position: relative;
   width: 100%;
+  /* Magic formula: clamp width to parent, max 1100px, or the width that makes height exactly 80vh */
+  max-width: min(100%, 1100px, calc(80vh * (v-bind(ratio))));
   aspect-ratio: v-bind(ratio);
+  margin: 0 auto;
   background: #000;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 0 30px rgba(176, 74, 255, 0.2);
   transition: all 0.3s ease;
-  max-height: 90vh;
 }
 
 .unity-container.is-fake-fullscreen {

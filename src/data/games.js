@@ -119,7 +119,8 @@ export const games = [
       "Vibrant card art & effects",
     ],
     screenshots: [
-     `${BASE}/sikoo_banner.png`
+     `${BASE}/sikoo_banner.png`,
+      `${BASE}/sikoo_thumb.png`,
     ],
     links: { playstore: "#", appstore: "#" },
     year: 2024,
@@ -133,8 +134,64 @@ export const games = [
       code: `${BASE}/unity/Sikoo/Build/Sikoo.wasm.unityweb`,
     },
   },
+  {
+    id: 5,
+    name: "Zombie War",
+    tagline: "Survive the undead apocalypse",
+    description: "A fast-paced survival action game where you must defend your base against endless waves of the undead. Upgrade your weapons, fortify your defenses, and survive the Zombie War.",
+    thumb: `${BASE}/zombie_war_thumb.png`,
+    banner: `${BASE}/zombie_war_banner.png`,
+    category: "Action",
+    features: [
+      "Endless zombie waves",
+      "Multiple weapons and upgrades",
+      "Base building mechanics",
+      "Challenging boss fights",
+      "Post-apocalyptic setting"
+    ],
+    screenshots: [
+     `${BASE}/zombie_war_thumb.png`,
+     `${BASE}/zombie_war_banner.png`,
+    ],
+    links: { playstore: "#", appstore: "#" },
+    year: 2024,
+    engine: "Unity6",
+    orientation: "portrait",
+    aspectRatio: "9/16",
+    webgl: {
+      loader: `${BASE}/unity/LastWar/Build/LastWar.loader.js`,
+      data: `${BASE}/unity/LastWar/Build/LastWar.data.unityweb`,
+      framework: `${BASE}/unity/LastWar/Build/LastWar.framework.js.unityweb`,
+      code: `${BASE}/unity/LastWar/Build/LastWar.wasm.unityweb`,
+    },
+  },
+  {
+    id: 6,
+    name: "Bamboo Enfield",
+    tagline: "Explore the bamboo forest",
+    description: "An exciting web-based adventure game where you navigate through dense bamboo forests.",
+    thumb: `${BASE}/roaster_thumb.png`,
+    banner: `${BASE}/roaster_banner.png`,
+    category: "Adventure",
+    features: [
+      "Beautiful bamboo environments",
+      "Web-based gameplay",
+      "Instant loading",
+      "Cross-platform support"
+    ],
+    screenshots: [
+      `${BASE}/roaster_thumb.png`,
+      `${BASE}/roaster_banner.png`,
+    ],
+    links: { playstore: "#", appstore: "#" },
+    year: 2024,
+    engine: "External",
+    orientation: "landscape",
+    aspectRatio: "16/9",
+    iframeUrl: "https://gumiho2504.github.io/DAGA-Bamboo-Enfield/",
+  },
   // {
-  //   id: 5,
+  //   id: 6,
   //   name: "Fox Tails",
   //   tagline: "An epic nine-tails adventure",
   //   description: "An atmospheric action-RPG following a Gumiho's journey across ancient spirit realms. Master nine elemental abilities, forge alliances, and uncover the secrets of the spirit world in this hand-crafted adventure.",
@@ -159,7 +216,7 @@ export const games = [
   //   engine: "Unity"
   // },
   // {
-  //   id: 6,
+  //   id: 7,
   //   name: "Temple Rush",
   //   tagline: "Race through ancient Khmer temples",
   //   description: "An endless runner set in the magnificent temples of ancient Cambodia. Dodge traps, leap over ruins, and collect relics across 30 stunning temple environments inspired by Angkor Wat and beyond.",
@@ -184,7 +241,7 @@ export const games = [
   //   engine: "Unity"
   // },
   // {
-  //   id: 7,
+  //   id: 8,
   //   name: "Starfall Puzzle",
   //   tagline: "Align the stars, reshape the cosmos",
   //   description: "A zen puzzle game where you rearrange constellation fragments to restore fallen stars. Each chapter unfolds a cosmic mythology, with 120 meditative puzzles and a breathtaking procedural star-field backdrop.",

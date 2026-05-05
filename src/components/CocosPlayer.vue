@@ -150,11 +150,12 @@ onMounted(() => {
 .cocos-container {
   position: relative;
   width: 100%;
+  max-width: min(100%, 1100px, calc(80vh * (v-bind(ratio))));
   aspect-ratio: v-bind(ratio);
+  margin: 0 auto;
   background: #000;
   box-shadow: 0 0 40px rgba(176, 74, 255, 0.15);
   transition: all 0.3s ease;
-  max-height: 90vh;
 }
 
 .cocos-container.is-fake-fullscreen {
