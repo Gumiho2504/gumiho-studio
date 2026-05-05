@@ -1,5 +1,5 @@
-const BASE = import.meta.env.BASE_URL.endsWith('/') 
-  ? import.meta.env.BASE_URL.slice(0, -1) 
+const BASE = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL.slice(0, -1)
   : import.meta.env.BASE_URL;
 
 export const games = [
@@ -34,19 +34,22 @@ export const games = [
     },
     year: 2024,
     engine: "Unity6",
+    orientation: "portrait",
+    aspectRatio: "9/16",
     webgl: {
-      loader: `${BASE}/unity/Bloomee/Build/bloomee_web.loader.js`,
-      data: `${BASE}/unity/Bloomee/Build/bloomee_web.data.unityweb`,
-      framework: `${BASE}/unity/Bloomee/Build/bloomee_web.framework.js.unityweb`,
-      code: `${BASE}/unity/Bloomee/Build/bloomee_web.wasm.unityweb`,
+      loader: `${BASE}/unity/Bloomee/Build/Bloomee.loader.js`,
+      data: `${BASE}/unity/Bloomee/Build/Bloomee.data.unityweb`,
+      framework: `${BASE}/unity/Bloomee/Build/Bloomee.framework.js.unityweb`,
+      code: `${BASE}/unity/Bloomee/Build/Bloomee.wasm.unityweb`,
       streamingAssets: `${BASE}/unity/Bloomee/StreamingAssets`,
-    }
+    },
   },
   {
     id: 2,
     name: "Tiles Blast",
     tagline: "Blast through cosmic tiles",
-    description: "A fast-paced tile-matching puzzle game with explosive combos and cosmic effects. Match and blast through hundreds of levels in this vibrant puzzle adventure.",
+    description:
+      "A fast-paced tile-matching puzzle game with explosive combos and cosmic effects. Match and blast through hundreds of levels in this vibrant puzzle adventure.",
     thumb: `${BASE}/tiles_blast_thumb_1777879066376.png`,
     banner: `${BASE}/tiles_blast_banner_1777879096705.png`,
     category: "Puzzle",
@@ -56,26 +59,27 @@ export const games = [
       "Vibrant cosmic art style",
       "Easy to learn, hard to master",
       "Regular new level updates",
-      "Daily rewards and events"
+      "Daily rewards and events",
     ],
-    screenshots: [
-      `${BASE}/tiles_blast_thumb_1777879066376.png`,
-    ],
+    screenshots: [`${BASE}/tiles_blast_thumb_1777879066376.png`],
     links: { playstore: "#", appstore: "#" },
     year: 2024,
     engine: "Unity6",
+    orientation: "landscape",
+    aspectRatio: "16/9",
     webgl: {
       loader: `${BASE}/unity/TilesBlast/Build/TileBlastWebGL.loader.js`,
       data: `${BASE}/unity/TilesBlast/Build/TileBlastWebGL.data.unityweb`,
       framework: `${BASE}/unity/TilesBlast/Build/TileBlastWebGL.framework.js.unityweb`,
       code: `${BASE}/unity/TilesBlast/Build/TileBlastWebGL.wasm.unityweb`,
-    }
+    },
   },
   {
     id: 3,
     name: "Swiper Bird",
     tagline: "Swipe to soar through the magic forest",
-    description: "A fast-paced, addictive mobile adventure where you guide a brave little bird through a mystical forest. Use intuitive swipe gestures to dodge obstacles, collect magical fruits, and set high scores in this beautiful Cocos Creator powered experience.",
+    description:
+      "A fast-paced, addictive mobile adventure where you guide a brave little bird through a mystical forest. Use intuitive swipe gestures to dodge obstacles, collect magical fruits, and set high scores in this beautiful Cocos Creator powered experience.",
     thumb: `${BASE}/swiper_bird_thumb_1777880735824.png`,
     banner: `${BASE}/swiper_bird_banner_1777880769400.png`,
     category: "Action",
@@ -85,23 +89,52 @@ export const games = [
       "Unlockable bird characters",
       "Stunning magical forest environment",
       "Compete with friends on leaderboards",
-      "Optimized for mobile web"
+      "Optimized for mobile web",
     ],
-    screenshots: [
-      `${BASE}/swiper_bird_thumb_1777880735824.png`,
-    ],
+    screenshots: [`${BASE}/swiper_bird_thumb_1777880735824.png`],
     links: { playstore: "#", appstore: "#" },
     year: 2024,
     engine: "Cocos",
+    orientation: "portrait",
     cocosUrl: `${BASE}/cocos/SwiperBird/index.html`,
-    aspectRatio: "9 / 16"
+    aspectRatio: "9 / 16",
+  },
+  {
+    id: 4,
+    name: "Sikoo",
+    tagline: "Strategy meets sabotage in this chaotic card game",
+    description:
+      "Experience the thrill of Sikoo, a fast-paced card game where every turn can flip the table. Use action cards to swap hands, skip turns, and unleash the legendary 'Siko' card to reset the game. Perfect for competitive players who love strategic chaos and unpredictable twists.",
+    thumb:
+     `${BASE}/sikoo_thumb.png`,
+    banner:
+     `${BASE}/sikoo_banner.png`,
+    category: "Card",
+    features: [
+      "Fast-paced chaotic gameplay",
+      "Strategic action cards",
+      "The board-wiping 'Siko' card",
+      "Dynamic hand-swapping mechanics",
+      "Competitive local & AI modes",
+      "Vibrant card art & effects",
+    ],
+    screenshots: [
+     `${BASE}/sikoo_banner.png`
+    ],
+    links: { playstore: "#", appstore: "#" },
+    year: 2024,
+    engine: "Unity6",
+    orientation: "landscape",
+    aspectRatio: "16/10",
+    webgl: {
+      loader: `${BASE}/unity/Sikoo/Build/Sikoo.loader.js`,
+      data: `${BASE}/unity/Sikoo/Build/Sikoo.data.unityweb`,
+      framework: `${BASE}/unity/Sikoo/Build/Sikoo.framework.js.unityweb`,
+      code: `${BASE}/unity/Sikoo/Build/Sikoo.wasm.unityweb`,
+    },
   },
   // {
-  //   id: 4,
-  //   name: "Spirit Cards",
-
-  // {
-  //   id: 4,
+  //   id: 5,
   //   name: "Fox Tails",
   //   tagline: "An epic nine-tails adventure",
   //   description: "An atmospheric action-RPG following a Gumiho's journey across ancient spirit realms. Master nine elemental abilities, forge alliances, and uncover the secrets of the spirit world in this hand-crafted adventure.",
@@ -126,7 +159,7 @@ export const games = [
   //   engine: "Unity"
   // },
   // {
-  //   id: 5,
+  //   id: 6,
   //   name: "Temple Rush",
   //   tagline: "Race through ancient Khmer temples",
   //   description: "An endless runner set in the magnificent temples of ancient Cambodia. Dodge traps, leap over ruins, and collect relics across 30 stunning temple environments inspired by Angkor Wat and beyond.",
@@ -151,7 +184,7 @@ export const games = [
   //   engine: "Unity"
   // },
   // {
-  //   id: 6,
+  //   id: 7,
   //   name: "Starfall Puzzle",
   //   tagline: "Align the stars, reshape the cosmos",
   //   description: "A zen puzzle game where you rearrange constellation fragments to restore fallen stars. Each chapter unfolds a cosmic mythology, with 120 meditative puzzles and a breathtaking procedural star-field backdrop.",

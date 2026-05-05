@@ -50,11 +50,12 @@ if (typeof window === 'undefined') {
                     }
                     newHeaders.set("Cross-Origin-Opener-Policy", "same-origin");
 
-                    // Unity WebGL Asset Support (.br, .gz, .unityweb, .bundle, .json)
-                    const isUnityFile = [".br", ".gz", ".unityweb", ".bundle", ".json"].some(ext => url.includes(ext));
+                    // Game Asset Support (Unity & Cocos)
+                    const isGameAsset = [".br", ".gz", ".unityweb", ".bundle", ".json"].some(ext => url.includes(ext)) || 
+                                      (url.includes("/cocos/") && (url.includes(".js") || url.includes(".wasm")));
                     
-                    if (isUnityFile) {
-                        console.log("COI: Intercepting Unity asset:", url);
+                    if (isGameAsset) {
+                        console.log("COI: Intercepting game asset:", url);
                         
                         // Handle compression headers
                         if (url.includes(".br") || url.includes(".unityweb")) {
