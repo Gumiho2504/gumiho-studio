@@ -123,15 +123,20 @@ const toggleFullscreen = () => {
       })
     } else if (elem.webkitRequestFullscreen) {
       elem.webkitRequestFullscreen()
+      setTimeout(() => {
+        if (!document.webkitFullscreenElement) {
+          isFullscreen.value = true
+        }
+      }, 200)
     } else {
       // Fake fullscreen fallback (e.g. iPhone)
       isFullscreen.value = true
     }
   } else {
     // Exit fullscreen
-    if (document.exitFullscreen) {
-      document.exitFullscreen()
-    } else if (document.webkitExitFullscreen) {
+    if (document.fullscreenElement && document.exitFullscreen) {
+      document.exitFullscreen().catch(() => {})
+    } else if (document.webkitFullscreenElement && document.webkitExitFullscreen) {
       document.webkitExitFullscreen()
     }
     isFullscreen.value = false
@@ -147,8 +152,17 @@ onMounted(() => {
   
   const handleFsChange = () => {
     const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement)
-    isFullscreen.value = isFs
-    if (isFs) isFocused.value = true
+    // Only update if it's a real native fullscreen event changing state
+    // Don't overwrite fake fullscreen state (where isFullscreen is true but isFs is false)
+    if (isFs || document.fullscreenElement !== undefined) {
+       // If we are exiting native fullscreen
+       if (!isFs && isFullscreen.value && !document.querySelector('.is-fake-fullscreen')) {
+         isFullscreen.value = false
+       } else if (isFs) {
+         isFullscreen.value = true
+         isFocused.value = true
+       }
+    }
   }
   
   const handleOutsideClick = (e) => {
@@ -202,8 +216,8 @@ onMounted(() => {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100dvw;
+  height: 100dvh;
   z-index: 9999;
   border-radius: 0;
   aspect-ratio: auto;
