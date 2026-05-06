@@ -1,7 +1,10 @@
 <template>
   <div class="cocos-player-wrapper">
-    <div ref="cocosContainer" class="cocos-container shadow-2xl rounded-xl overflow-hidden bg-black border border-white/10" :class="{ 'is-fake-fullscreen': isFullscreen }">
-      
+    <Teleport to="body" :disabled="!isFakeFs">
+      <div ref="cocosContainer"
+        class="cocos-container shadow-2xl rounded-xl overflow-hidden bg-black border border-white/10"
+        :class="{ 'is-fake-fullscreen': isFakeFs }">
+
       <!-- Loading Overlay -->
       <Transition name="fade">
         <div v-if="isLoading" class="loading-overlay">
@@ -12,42 +15,32 @@
         </div>
       </Transition>
 
-      <iframe
-        ref="cocosFrame"
-        :src="url"
-        class="cocos-iframe"
-        :class="{ 'focused': isFocused }"
-        allow="autoplay; fullscreen; keyboard"
-        frameborder="0"
-        @load="onFrameLoad"
-      ></iframe>
+      <iframe ref="cocosFrame" :src="url" class="cocos-iframe" :class="{ 'focused': isFocused }"
+        allow="autoplay; fullscreen; keyboard" frameborder="0" @load="onFrameLoad"></iframe>
 
       <!-- Focus Overlay for Mobile Scrolling -->
       <div v-if="!isFocused && !isLoading" class="focus-overlay" @click="handleFocus">
         <div class="focus-content">
           <div class="focus-icon">
             <svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor">
-              <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+              <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" />
             </svg>
           </div>
           <p class="font-cinzel">Tap to Play</p>
         </div>
       </div>
-      
+
       <!-- Fullscreen Toggle -->
-      <button 
-        @click="toggleFullscreen"
-        class="fullscreen-btn"
-        title="Toggle Fullscreen"
-      >
+      <button @click="toggleFullscreen" class="fullscreen-btn" title="Toggle Fullscreen">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
         </svg>
       </button>
 
-      <!-- Orientation Warning for Mobile -->
       <OrientationWarning :requiredOrientation="orientation" />
-    </div>
+      </div>
+    </Teleport>
   </div>
 </template>
 
@@ -74,6 +67,7 @@ const cocosFrame = ref(null)
 const cocosContainer = ref(null)
 const isLoading = ref(true)
 const isFullscreen = ref(false)
+const isFakeFs = ref(false)
 const isFocused = ref(false)
 
 const onFrameLoad = () => {
@@ -90,27 +84,35 @@ const toggleFullscreen = () => {
     // Try native fullscreen
     if (elem.requestFullscreen) {
       elem.requestFullscreen().catch(() => {
+        isFakeFs.value = true
         isFullscreen.value = true
       })
     } else if (elem.webkitRequestFullscreen) {
       elem.webkitRequestFullscreen()
       setTimeout(() => {
         if (!document.webkitFullscreenElement) {
+          isFakeFs.value = true
           isFullscreen.value = true
         }
       }, 200)
     } else {
       // Fake fullscreen fallback (e.g. iPhone)
+      isFakeFs.value = true
       isFullscreen.value = true
     }
   } else {
     // Exit fullscreen
-    if (document.fullscreenElement && document.exitFullscreen) {
-      document.exitFullscreen().catch(() => {})
-    } else if (document.webkitFullscreenElement && document.webkitExitFullscreen) {
-      document.webkitExitFullscreen()
+    if (isFakeFs.value) {
+      isFakeFs.value = false
+      isFullscreen.value = false
+    } else {
+      if (document.fullscreenElement && document.exitFullscreen) {
+        document.exitFullscreen().catch(() => { })
+      } else if (document.webkitFullscreenElement && document.webkitExitFullscreen) {
+        document.webkitExitFullscreen()
+      }
+      isFullscreen.value = false
     }
-    isFullscreen.value = false
   }
 }
 
@@ -124,16 +126,16 @@ onMounted(() => {
     // Only update if it's a real native fullscreen event changing state
     // Don't overwrite fake fullscreen state (where isFullscreen is true but isFs is false)
     if (isFs || document.fullscreenElement !== undefined) {
-       // If we are exiting native fullscreen
-       if (!isFs && isFullscreen.value && !document.querySelector('.is-fake-fullscreen')) {
-         isFullscreen.value = false
-       } else if (isFs) {
-         isFullscreen.value = true
-         isFocused.value = true
-       }
+      // If we are exiting native fullscreen
+      if (!isFs && isFullscreen.value && !isFakeFs.value) {
+        isFullscreen.value = false
+      } else if (isFs) {
+        isFullscreen.value = true
+        isFocused.value = true
+      }
     }
   }
-  
+
   const handleOutsideClick = (e) => {
     if (cocosContainer.value && !cocosContainer.value.contains(e.target)) {
       isFocused.value = false
@@ -144,7 +146,7 @@ onMounted(() => {
   document.addEventListener('webkitfullscreenchange', handleFsChange)
   document.addEventListener('mousedown', handleOutsideClick)
   document.addEventListener('touchstart', handleOutsideClick)
-  
+
   onBeforeUnmount(() => {
     document.removeEventListener('fullscreenchange', handleFsChange)
     document.removeEventListener('webkitfullscreenchange', handleFsChange)
@@ -176,12 +178,15 @@ onMounted(() => {
   position: fixed;
   top: 0;
   left: 0;
+  width: 100vw;
+  height: 100vh;
   width: 100dvw;
   height: 100dvh;
-  z-index: 9999;
+  z-index: 99999;
   border-radius: 0;
   aspect-ratio: auto;
-  max-height: none;
+  max-width: none !important;
+  max-height: none !important;
 }
 
 .cocos-iframe {
@@ -214,9 +219,20 @@ onMounted(() => {
 }
 
 @keyframes pulse {
-  0% { transform: scale(1); opacity: 0.8; }
-  50% { transform: scale(1.1); opacity: 1; }
-  100% { transform: scale(1); opacity: 0.8; }
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
 }
 
 .focus-icon {
@@ -295,13 +311,13 @@ onMounted(() => {
     max-width: 100%;
     padding: 0;
   }
-  
+
   .cocos-container {
     border-radius: 0;
     border-left: none;
     border-right: none;
   }
-  
+
   .fullscreen-btn {
     bottom: 0.5rem;
     right: 0.5rem;
@@ -311,7 +327,9 @@ onMounted(() => {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .fade-leave-active {

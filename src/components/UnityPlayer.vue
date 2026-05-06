@@ -1,5 +1,7 @@
 <template>
-  <div class="unity-container" ref="container" :class="{ 'is-fake-fullscreen': isFullscreen }">
+  <div class="unity-player-wrapper">
+    <Teleport to="body" :disabled="!isFakeFs">
+      <div class="unity-container" ref="container" :class="{ 'is-fake-fullscreen': isFakeFs }">
     <div v-if="loading" class="unity-loader">
       <div class="loader-content">
         <div class="spinner"></div>
@@ -31,8 +33,10 @@
       </button>
     </div>
     
-    <!-- Orientation Warning for Mobile -->
-    <OrientationWarning :requiredOrientation="orientation" />
+        <!-- Orientation Warning for Mobile -->
+        <OrientationWarning :requiredOrientation="orientation" />
+      </div>
+    </Teleport>
   </div>
 </template>
 
@@ -60,6 +64,7 @@ const canvas = ref(null)
 const loading = ref(true)
 const progress = ref(0)
 const isFullscreen = ref(false)
+const isFakeFs = ref(false)
 const isFocused = ref(false)
 let unityInstance = null
 
@@ -119,27 +124,35 @@ const toggleFullscreen = () => {
     if (elem.requestFullscreen) {
       elem.requestFullscreen().catch(() => {
         // Fallback to fake fullscreen if native fails
+        isFakeFs.value = true
         isFullscreen.value = true
       })
     } else if (elem.webkitRequestFullscreen) {
       elem.webkitRequestFullscreen()
       setTimeout(() => {
         if (!document.webkitFullscreenElement) {
+          isFakeFs.value = true
           isFullscreen.value = true
         }
       }, 200)
     } else {
       // Fake fullscreen fallback (e.g. iPhone)
+      isFakeFs.value = true
       isFullscreen.value = true
     }
   } else {
     // Exit fullscreen
-    if (document.fullscreenElement && document.exitFullscreen) {
-      document.exitFullscreen().catch(() => {})
-    } else if (document.webkitFullscreenElement && document.webkitExitFullscreen) {
-      document.webkitExitFullscreen()
+    if (isFakeFs.value) {
+      isFakeFs.value = false
+      isFullscreen.value = false
+    } else {
+      if (document.fullscreenElement && document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {})
+      } else if (document.webkitFullscreenElement && document.webkitExitFullscreen) {
+        document.webkitExitFullscreen()
+      }
+      isFullscreen.value = false
     }
-    isFullscreen.value = false
   }
 }
 
@@ -156,7 +169,7 @@ onMounted(() => {
     // Don't overwrite fake fullscreen state (where isFullscreen is true but isFs is false)
     if (isFs || document.fullscreenElement !== undefined) {
        // If we are exiting native fullscreen
-       if (!isFs && isFullscreen.value && !document.querySelector('.is-fake-fullscreen')) {
+       if (!isFs && isFullscreen.value && !isFakeFs.value) {
          isFullscreen.value = false
        } else if (isFs) {
          isFullscreen.value = true
@@ -216,12 +229,15 @@ onMounted(() => {
   position: fixed;
   top: 0;
   left: 0;
+  width: 100vw;
+  height: 100vh;
   width: 100dvw;
   height: 100dvh;
-  z-index: 9999;
+  z-index: 99999;
   border-radius: 0;
   aspect-ratio: auto;
-  max-height: none;
+  max-width: none !important;
+  max-height: none !important;
 }
 
 @media (max-width: 768px) {
