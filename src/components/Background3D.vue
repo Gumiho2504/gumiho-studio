@@ -59,7 +59,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="canvas-container">
-    <TresCanvas clear-color="#060612" alpha window-size>
+    <TresCanvas clear-color="#060612" alpha>
       <TresPerspectiveCamera :position="[0, 0, 7]" :look-at="[0, 0, 0]" />
       
       <!-- Stars -->
