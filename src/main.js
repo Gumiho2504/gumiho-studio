@@ -3,4 +3,6 @@ import App    from './App.vue'
 import router from './router/index.js'
 import './assets/css/main.css'
 
-createApp(App).use(router).mount('#app')
+import Tres from '@tresjs/core'
+
+createApp(App).use(router).use(Tres).mount('#app')

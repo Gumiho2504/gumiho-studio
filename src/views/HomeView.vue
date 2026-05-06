@@ -4,7 +4,7 @@
     <section class="hero">
       <div class="hero-bg" />
       <div class="grid-lines" />
-      <ParticleCanvas />
+      <Background3D />
 
       <!-- Floating orbs -->
       <div class="orb" style="width:400px;height:400px;background:rgba(176,74,255,.07);top:-10%;left:-5%;animation-duration:9s;" />
@@ -69,12 +69,17 @@
         </p>
       </div>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem;">
-        <GameCard
-          v-for="game in featuredGames"
-          :key="game.id"
-          :game="game"
-          @view="$router.push('/game/' + $event)"
-        />
+        <template v-if="isLoading">
+          <SkeletonCard v-for="n in 3" :key="'skeleton-' + n" />
+        </template>
+        <template v-else>
+          <GameCard
+            v-for="game in featuredGames"
+            :key="game.id"
+            :game="game"
+            @view="$router.push('/game/' + $event)"
+          />
+        </template>
       </div>
       <div style="text-align:center;margin-top:2.5rem;">
         <RouterLink to="/games" class="btn-outline">View All Games →</RouterLink>
@@ -113,11 +118,21 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { games } from '../data/games.js'
 import FoxLogo       from '../components/FoxLogo.vue'
 import GameCard       from '../components/GameCard.vue'
-import ParticleCanvas from '../components/ParticleCanvas.vue'
+import SkeletonCard   from '../components/SkeletonCard.vue'
+import Background3D from '../components/Background3D.vue'
+
+const isLoading = ref(true)
+
+onMounted(() => {
+  // Simulate loading delay for the premium skeleton effect
+  setTimeout(() => {
+    isLoading.value = false
+  }, 1800)
+})
 
 const featuredGames = computed(() => games.slice(0, 3))
 
